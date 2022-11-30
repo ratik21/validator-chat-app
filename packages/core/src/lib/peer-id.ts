@@ -47,7 +47,7 @@ export async function createPeerIdFromName (name: string): Promise<PeerId> {
 
   console.info(`PeerId not found. Generating new peer id at ${peerIdPath}`);
   const peerId = await createSecp256k1PeerId();
-  fs.writeFileSync(peerIdPath, JSON.stringify(exportToJSON(peerId), null, 2) );
+  writeFile600Perm(peerIdPath, exportToJSON(peerId));
   return peerId;
 }
 

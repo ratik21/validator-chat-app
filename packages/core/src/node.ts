@@ -57,12 +57,6 @@ export class P2PNode {
     } as any);
     await restApi.listen();
 
-
-
-    // intialize zstore
-    // this.zStore = new ZStore(this.node, password);
-    // await this.zStore.init(this.zId.name);
-
     return this.node;
   }
 }

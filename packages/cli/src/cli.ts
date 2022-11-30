@@ -11,9 +11,7 @@
 import semver from 'semver'
 import * as pkg from './package.js'
 import debug from 'debug'
-
 import { cli } from "./index.js";
-
 import { print, getRepoPath } from './utils.js';
 
 /**

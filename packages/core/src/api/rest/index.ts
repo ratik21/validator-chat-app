@@ -1,8 +1,7 @@
 import { Api } from "api";
 
 import {registerRoutes} from "api/beacon/server";
-import {ErrorAborted, ILogger} from "@lodestar/utils";
-import {IChainForkConfig} from "@lodestar/config";
+import {ErrorAborted} from "@lodestar/utils";
 import {NodeIsSyncing} from "../impl/errors.js";
 import {RestApiServer, RestApiServerModules, RestApiServerMetrics, RestApiServerOpts} from "./base.js";
 export {allNamespaces} from "api";

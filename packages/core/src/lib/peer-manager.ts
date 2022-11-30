@@ -1,5 +1,4 @@
 import {Libp2p as ILibp2p} from "libp2p";
-import PeerId from "peer-id";
 
 /**
  * Class to handle/emit Peer Discovery & connections by libp2p node

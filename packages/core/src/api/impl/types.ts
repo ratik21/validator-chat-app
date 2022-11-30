@@ -1,9 +1,4 @@
-import {IChainForkConfig} from "@lodestar/config";
-import {ILogger} from "@lodestar/utils";
-import { Libp2p as ILibp2p } from "libp2p";
 import { Gossip } from "../../lib/gossip";
-
-
 
 /**
  * PR ensure API follows spec required to include the isOptimistic boolean in many routes.

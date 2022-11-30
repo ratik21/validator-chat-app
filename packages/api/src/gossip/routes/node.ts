@@ -1,16 +1,14 @@
-import {allForks, ssz, StringType} from "@lodestar/types";
+import { StringType} from "@lodestar/types";
 import {ByteListType, ContainerType, UintNumberType} from "@chainsafe/ssz";
 import {
   ArrayOf,
   ContainerData,
   reqEmpty,
-  jsonType,
   ReturnTypes,
   RoutesData,
   Schema,
   ReqSerializers,
   ReqEmpty,
-  sameType,
   reqOnlyBody,
 } from "../../utils/index.js";
 

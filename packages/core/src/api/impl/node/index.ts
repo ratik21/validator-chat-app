@@ -3,7 +3,7 @@ import {ApiModules} from "../types.js";
 import {IApiOptions} from "../../options.js";
 import { MessageWithPubKey, Message } from "../../../types.js";
 
-export function getGossipApi(opts: IApiOptions, {gossip}: Pick<ApiModules, "gossip">): routes.node.Api {
+export function getGossipApi(_opts: IApiOptions, {gossip}: Pick<ApiModules, "gossip">): routes.node.Api {
   return {
     async publishToValidatorChatRoom(messageWithPubKey: MessageWithPubKey) {
       await gossip.publishMessageToValidators(messageWithPubKey);

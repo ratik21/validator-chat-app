@@ -1,15 +1,11 @@
 import { PubSub } from "@libp2p/interface-pubsub";
 import {Libp2p as ILibp2p} from "libp2p";
-import { fromString } from "uint8arrays/from-string";
 import {PeerId} from "@libp2p/interface-peer-id";
 import { DOMAIN_CHAT_MESSAGE, MESSAGE_MAX_LEN, VALIDATOR_CHATROOM_TOPIC } from "./constants.js";
 import { ChatMessage, Message, MessageWithPubKey, SignedChatMessage } from "../types.js";
-import { readFileSync } from "fs";
-import {Keystore} from "@chainsafe/bls-keystore";
 import { getBLSSecretKey } from "./utils.js";
 import {ByteListType, ByteVectorType, ContainerType, UintNumberType} from "@chainsafe/ssz";
 import {computeSigningRoot} from "@lodestar/state-transition";
-import { toString as uint8ArrayToString } from "uint8arrays/to-string";
 import {fromHexString} from "@chainsafe/ssz";
 import bls from "@chainsafe/bls";
 

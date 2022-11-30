@@ -1,15 +1,9 @@
 import { pathHelp } from '../utils.js'
-import repl from "repl";
-import chalk from "chalk";
-import { runInNewContext } from "vm";
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import delay from 'delay';
 import enquirer from "enquirer";
-// loookkkk
 import { P2PNode } from 'core';
-import yargs from 'yargs';	
 
 interface NodeInitOpts {
   name: string,

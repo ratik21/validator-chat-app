@@ -5,14 +5,9 @@ import { tcp } from '@libp2p/tcp'
 import { mplex } from '@libp2p/mplex'
 import { noise } from '@chainsafe/libp2p-noise'
 import { gossipsub } from '@chainsafe/libp2p-gossipsub'
-import { kadDHT } from '@libp2p/kad-dht'
 import { mdns } from '@libp2p/mdns'
 import { webRTCStar } from "@libp2p/webrtc-star";
-import { bootstrap } from "@libp2p/bootstrap";
-import { webSockets } from '@libp2p/websockets'
 import wrtc from "@koush/wrtc";
-import { Multiaddr } from 'multiaddr';
-import delay from "delay";
 
 export async function createLibp2pNode(peerId: PeerId): Promise<ILibp2p> {
   const star = webRTCStar({ wrtc: wrtc });

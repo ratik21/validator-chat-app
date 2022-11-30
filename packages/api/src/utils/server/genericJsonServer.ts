@@ -1,6 +1,5 @@
 import {mapValues} from "@lodestar/utils";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import {IChainForkConfig} from "@lodestar/config";
 import {ReqGeneric, RouteGeneric, ReturnTypes, TypeJson, Resolves, RouteGroupDefinition} from "../types.js";
 import {getFastifySchema} from "../schema.js";
 import {toColonNotationPath} from "../urlFormat.js";

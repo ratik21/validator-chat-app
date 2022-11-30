@@ -1,9 +1,9 @@
 import {Keystore} from "@chainsafe/bls-keystore";
 import bls from "@chainsafe/bls";
-import {SecretKey, CoordType} from "@chainsafe/bls/types";
+import {SecretKey} from "@chainsafe/bls/types";
 import path from "path";
 
-import { ROOT_DIR, ROOT_DIR_PATH } from "./constants.js";
+import { ROOT_DIR_PATH } from "./constants.js";
 import { readFileSync } from "fs";
 
 function _assertValidPubkeysHex(pubkeyHex: string): void {

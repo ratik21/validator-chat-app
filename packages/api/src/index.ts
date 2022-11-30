@@ -1,5 +1,5 @@
 // Re-exporting beacon only for backwards compatibility
-export * from "./beacon/index.js";
+export * from "./gossip/index.js";
 
 export {HttpClient, IHttpClient, HttpClientOptions, HttpClientModules, HttpError} from "./utils/client/index.js";
 

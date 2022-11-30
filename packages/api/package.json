@@ -8,11 +8,11 @@
     ".": {
       "import": "./build/index.js"
     },
-    "./beacon": {
-      "import": "./build/beacon/index.js"
+    "./gossip": {
+      "import": "./build/gossip/index.js"
     },
-    "./beacon/server": {
-      "import": "./build/beacon/server/index.js"
+    "./gossip/server": {
+      "import": "./build/gossip/server/index.js"
     }
   },
   "typesVersions": {

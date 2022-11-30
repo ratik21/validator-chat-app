@@ -1,8 +1,5 @@
 import {Api as GossipApi} from "./node.js";
-
-
 export * as node from "./node.js";
-
 
 export type Api = {
   gossip: GossipApi;
