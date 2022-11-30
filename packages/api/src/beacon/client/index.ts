@@ -16,6 +16,6 @@ export function getClient(opts: HttpClientOptions, modules: ClientModules): Api 
   const httpClient = modules.httpClient ?? new HttpClient(opts, modules);
 
   return {
-    node: node.getClient(httpClient)
+    gossip: node.getClient(httpClient)
   };
 }

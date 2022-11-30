@@ -9,51 +9,7 @@ import delay from 'delay';
 import enquirer from "enquirer";
 // loookkkk
 import { P2PNode } from 'core';
-import yargs from 'yargs';
-
-// handle top level await
-export function preprocess(input: string): string {
-	const awaitMatcher = /^(?:\s*(?:(?:let|var|const)\s)?\s*([^=]+)=\s*|^\s*)(await\s[\s\S]*)/;
-	const asyncWrapper = (code: string, binder: string): string => {
-		const assign = binder ? `global.${binder} = ` : "";
-		return `(function(){ async function _wrap() { return ${assign}${code} } return _wrap();})()`;
-	};
-
-	// match & transform
-	const match = input.match(awaitMatcher);
-	if (match) {
-		input = `${asyncWrapper(match[2], match[1])}`;
-	}
-	return input;
-}
-
-// check if repl error is recoverable
-export function isRecoverableError(error: Error): boolean {
-	if (error.name === "SyntaxError") {
-		return /^(Unexpected end of input|Unexpected token)/.test(error.message);
-	}
-	return false;
-}
-
-// handles top level await by preprocessing input and awaits the output before returning
-async function evaluate(
-	code: string,
-	context: object,
-	filename: string,
-	callback: (err: Error | null, result?: object) => void
-): Promise<void> {
-	try {
-		const result = await runInNewContext(preprocess(code), context);
-		callback(null, result);
-	} catch (e) {
-		if (e instanceof Error && isRecoverableError(e)) {
-			callback(new repl.Recoverable(e));
-		} else {
-			console.error(e);
-			callback(null);
-		}
-	}
-}
+import yargs from 'yargs';	
 
 interface NodeInitOpts {
   name: string,

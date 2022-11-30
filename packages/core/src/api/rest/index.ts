@@ -15,7 +15,7 @@ export type BeaconRestApiServerOpts = Omit<RestApiServerOpts, "bearerToken"> & {
 export const beaconRestApiServerOpts: BeaconRestApiServerOpts = {
   enabled: true,
   // ApiNamespace "debug" is not turned on by default
-  api: [ "node"],
+  api: [ "gossip"],
   address: "127.0.0.1",
   port: 9596,
   cors: "*",

@@ -1,9 +1,6 @@
-import {IChainForkConfig} from "@lodestar/config";
 import {Api} from "../routes/index.js";
 import {ServerInstance, ServerRoute, RouteConfig, registerRoute} from "../../utils/server/index.js";
-
-
-import * as node from "./node.js";
+import * as gossip from "./node.js";
 
 // Re-export for convenience
 export {RouteConfig};
@@ -22,7 +19,7 @@ export function registerRoutes(
     };
   } = {
     // Initializes route types and their definitions
-    node: () => node.getRoutes(api.node),
+    gossip: () => gossip.getRoutes(api.gossip),
   };
 
   for (const namespace of enabledNamespaces) {

@@ -1,6 +1,7 @@
 import {IChainForkConfig} from "@lodestar/config";
 import {ILogger} from "@lodestar/utils";
 import { Libp2p as ILibp2p } from "libp2p";
+import { Gossip } from "../../lib/gossip";
 
 
 
@@ -12,6 +13,5 @@ import { Libp2p as ILibp2p } from "libp2p";
 export const IS_OPTIMISTIC_TEMP = false;
 
 export type ApiModules = {
-  //logger: ILogger;
-  node: ILibp2p
+  gossip: Gossip
 };

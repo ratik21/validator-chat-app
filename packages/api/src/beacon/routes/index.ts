@@ -1,11 +1,11 @@
-import {Api as NodeApi} from "./node.js";
+import {Api as GossipApi} from "./node.js";
 
 
 export * as node from "./node.js";
 
 
 export type Api = {
-  node: NodeApi;
+  gossip: GossipApi;
 };
 
 // Reasoning of the API definitions

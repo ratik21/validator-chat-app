@@ -9,6 +9,6 @@ export {Api};
 // Declare namespaces for CLI options
 export type ApiNamespace = keyof Api;
 const allNamespacesObj: {[K in keyof Api]: true} = {
-  node: true,
+  gossip: true,
 };
 export const allNamespaces = Object.keys(allNamespacesObj) as ApiNamespace[];

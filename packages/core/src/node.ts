@@ -51,7 +51,7 @@ export class P2PNode {
   
     // start rest api server
     const restApiOpts = { ...beaconRestApiServerOpts, ...nodeInitOpts.rest };
-    const api = getApi({ rest: restApiOpts }, { node: this.node });
+    const api = getApi({ rest: restApiOpts }, { gossip: this.gossip });
     const restApi = new BeaconRestApiServer(restApiOpts, {
       api,
     } as any);
@@ -63,20 +63,6 @@ export class P2PNode {
     // this.zStore = new ZStore(this.node, password);
     // await this.zStore.init(this.zId.name);
 
-    this._listen(); // listen to pubsub events
     return this.node;
   }
-
-  private _listen (): void {
-    this.node.pubsub.addEventListener('message', async (event) => {
-      const from = (event.detail as any).from.toString();
-
-      if (event.detail.topic.includes(`/zero-os/gossipPad/`)) {
-        // y-libp2p protocol strings (changes, stateVector, awareness). Check packages/y-libp2p
-      } else {
-        console.log(`Received from ${from} on channel ${event.detail.topic}: ${uint8ArrayToString(event.detail.data)}`);
-      }
-    });
-  }
-
 }
