@@ -115,31 +115,5 @@ export class Gossip {
   getRecentMessages() {
     return this.messages;
   }
-  
-  // subscribe (channel: string): void {
-  //   if (!this.pubsub) {
-  //     throw new Error('pubsub has not been configured');
-  //   }
-  //   this.pubsub.subscribe(channel);
-  //   console.log(this.peerId.toString() + " has subscribed to: " + channel);
-  // }
-
-  // unsubscribe (channel: string): void {
-  //   if (!this.pubsub) {
-  //     throw new Error('pubsub has not been configured');
-  //   }
-
-  //   this.pubsub.unsubscribe(channel);
-  //   console.log(this.peerId.toString() + " has unsubscribed from: " + channel);
-  // }
-
-  // async publish (channel: string, msg: string): Promise<void> {
-  //   await this.pubsub
-  //     .publish(channel, fromString(msg))
-  //     .catch(err => { throw new Error(err); });
-    
-  //     console.log("published");
-  // }
-
 }
 

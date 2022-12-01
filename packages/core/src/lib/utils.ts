@@ -18,7 +18,7 @@ export async function getBLSSecretKey(pubKey: string): Promise<SecretKey> {
   _assertValidPubkeysHex(pubKey);
 
   // read imported keystores (using the lodestar cli validator import)
-  const keyStorePath = path.join(ROOT_DIR_PATH, "keystore", pubKey, "voting-keystore.json");
+  const keyStorePath = path.join(ROOT_DIR_PATH, "keystores", pubKey, "voting-keystore.json");
   const secretsPath = path.join(ROOT_DIR_PATH, "secrets", pubKey);
 
   // parse keystore
@@ -28,7 +28,5 @@ export async function getBLSSecretKey(pubKey: string): Promise<SecretKey> {
   // decrypt using password & get sK
   const password = readFileSync(secretsPath);
   const secretKeyBytes = await keystore.decrypt(password);
-  //console.log("bbbb ", secretKeyBytes);
-
   return bls.SecretKey.fromBytes(secretKeyBytes);
 }

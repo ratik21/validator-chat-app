@@ -74,16 +74,6 @@ async function main (argv) {
 
   try {
     const data = await cli(command, async (argv) => {
-      if (!['init', 'sandbox', 'commands'].includes(command[0])) {
-        // @ts-ignore argv as no properties in common
-        const { ringer, cleanup } = await load()
-
-        ctx = {
-          ...ctx,
-          ringer,
-          cleanup
-        }
-      }
 
       argv.ctx = ctx
 
