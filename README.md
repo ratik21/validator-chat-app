@@ -1,11 +1,15 @@
-# zChain
+# Ringer
 
-A zChain is a chain of Messages. Each Message contains a hash as a reference to the prior Message in the chain, that can be used to reconstruct the chain back to the initial Message. A zChain node is essentially a [libp2p](https://github.com/libp2p/js-libp2p) node (at `~/.zchain/`), where messaging relies on libp2p pubsub (gossipsub) system. Messages are ordered using crdt (conflict free resolution data types) using [yjs](https://github.com/yjs/yjs), which means that even if you're offline, the messages are appended to the chain in the correct order, when you go online and sync with the network. Messages on zchain are persisted, i.e your local messages are stored on your system. We are using [level-db](https://github.com/google/leveldb) as our primary database for storing data.
+Peer to peer chat application for validators from the beacon chain where validators can broadcast chat messages b/w one another using the gossip protocol. By default all data is stored at `~/.ringer`
 
-So, main design components for zchain include:
-+ [libp2p](https://github.com/libp2p/js-libp2p): networking stack. PeerId is stored at `~/.zchain/zId/<node-name>`
-+ [yjs](https://github.com/yjs/yjs): CRDT
-+ [level-db](https://github.com/google/leveldb): Local Storage. Data is stored at `~/.zchain/db/<node-name>`
+## Notes
+
++ For the signed message I have included the `publicKey` in the message instead of the validator index. I understand it adds extra bytes (48) to the message but as per my discussion with Cayman he told me that you can just run this app without running a node. So did that accordingly. Otherwise we can use a `validatorIndex` and have the beacon node url, using which we can query the beacon api (using `@lodestar/api`) for the state which has the validator's publickey and index. Please let me know and we can do it that way. 
+
++ Not able to add unit tests :( Feel bad about this one, but I feel i had exhausted the time limit for the assignment in setting up the code (api, cli, core), adding node config, gossip class, message validation, rest api routes, cli commands (init & import), and metrics(*wip*). But happy to add them if you allow more time, please let me know that as well :)
+
++ *wip* state of metrics. I was able to port the code from `lodestar` and start the metrics server and setup prometheus, but wasn't able to see the global metrics. Will definitely be looking more into that.
+
 
 ## Requirements
 
@@ -17,80 +21,18 @@ So, main design components for zchain include:
 
 First clone the git repo:
 ```sh
-git clone https://github.com/zer0-os/zChain.git
-cd zChain/
+git clone https://github.com/ratik21/validator-chat-app.git
+cd validator-chat-app/
 ```
-
-### Linux
 
 After cloning the git repo, simply run:
 ```sh
 sh install.sh
 ```
 
-This shell script will install, build and link all the packages. Try running `ringer --help` to check if the installation was proper. You should see something like:
+This shell script will install, build and link the `ringer` cli file globally. Try running `ringer --help` to check if the installation was proper. You should see something like:
 
-![image](https://user-images.githubusercontent.com/33264364/165640076-fe28e4d3-83a1-48da-9bc7-72ef58dc6ad8.png)
-
-### Windows
-
-For installation on windows, check out this great infographic posted by [0://wilder.LΘΤΣΝΣ](https://twitter.com/_LOTENE), [here](https://twitter.com/_LOTENE/status/1520865654533988354).
-
-
-### MacOS
-
-**NOTE:** For *macOS* users, it is recommended to use `nvm` to install and use nodejs instead of `brew`. Follow [this](https://medium.com/@lucaskay/install-node-and-npm-using-nvm-in-mac-or-linux-ubuntu-f0c85153e173) tutorial to setup `nvm` on mac/linux. If you're getting `nvm: command not found` after running the curl, simply do `source ~/.zshrc` (or mac), or `source ~/.bashrc` (on linux). Make sure **not** to install nodejs using sudo.
-
-#### Intel based macs (*not m1* )
-
-For intel chip macs, you can follow the same steps for `linux` setup, i.e simply run `install.sh` after cloning the repo. If you're getting a permission denied issue, you likely installed nodejs with sudo. Follow the comment in above section to reinstall node using `nvm`.
-
-#### M1 macs (ARM architecture)
-
-For `m1` chip macs, the installation/running zchain can be a bit tricky. There are some dependencies which are incompatible with the mac arm architecture, specifically `wrtc`. (open) Issue can be found [here](https://github.com/node-webrtc/node-webrtc/issues/698).
-
-To install and run zchain we'll need to switch the architecture from `arm` to `x64`. And then we will continue with the setup. Steps:
-
-+ Switch architecture from `arm` to `x64`
-  ```sh
-  arch -x86_64 zsh
-  ```
-
-+ Confirm the "current" architure you're on by running
-  ```
-  arch
-  ```
-  This should return `x64`/`i3`/`i9`..
-
-+ Install nodejs using `nvm`. We'll install nodev16 (**not** 18). This is because of incompatibility with the latest node with m1.
-  ```
-  // run install script
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-
-  // reload terminal
-  source ~/.zshrc
-
-  // install node v16
-  nvm install 16
-
-  // use nodev16
-  nvm use 16
-  ```
-
-+ Confirm the nodejs installation by running `node -v && npm -v` and checking the respective versions of node and npm.
-
-+ Now, we can clone the repo and setup zchain (similar to other OS setups):
-  ```sh
-  git clone https://github.com/zer0-os/zChain.git
-  cd zChain/
-  sh install.sh
-  ```
-
-Try running `ringer --help` to check if the installation was proper.
-
-**NOTES:**
-+ After running zchain, don't forget the "exit" the `x64` architecture. Simply run `exit` on the terminal, to get back to `arm` arch.
-+ Currently this installation does **not** guarantee that zchain will run on m1 macs successfully. On some m1's it was able to run zchain after following the steps above. So for now this is still a *wip*.
+<img width="1012" alt="image" src="https://user-images.githubusercontent.com/33264364/204995385-fb958927-81b6-4ce2-9575-e705b4d1977c.png">
 
 
 ## Clean
@@ -100,75 +42,73 @@ To remove *node_modules* & all *build/* folders run
 sh clean.sh
 ```
 
-## Quick Start
-
-To quickly get up a node up & running, you can start up the sandbox. It has the zChain (libp2p) node initialized within the `ringer` global var (present in the execution environment of the REPL):
-```sh
-# clone + setup
-git clone <zChain-repo-git-url>
-sh install.sh
-
-# run the sandbox
-ringer sandbox
-```
-
-The screen should look something like this:
-![image](https://user-images.githubusercontent.com/33264364/165646660-fdf65586-f324-48ca-bd02-6dea50996e75.png)
-
-You can run another node, on another terminal screen (using `ringer sandbox` again, and select the option "*Initialize a new node*"). Then those two nodes can interact with each other.
-
-## Docker 
-
-To setup and start the project using docker, simply execute the bash script `docker.sh`:
-```bash
-bash docker.sh
-```
-
-It will build the docker image, install dependencies, build the typescript project and launch an interactive shell in a docker container.
-
 
 ## Packages
 
 The repo has mainly been divided into 3 packages
 
-+ `packages/zchain-core`: Contains code for core zChain package (library).
-+ `packages/apps/ringer`: A ringer app (p2p twitter like) built on top of zChain.
-+ `packages/ringer-cli`: CLI for ringer app. Currently supports only the "sandbox" command.
++ `packages/core`: Contains code for setting up the node, route implementation, message handling & metrics. Read more [here](./packages/core/README.md).
++ `packages/api`: REST api for the libp2p node. Supports publishing a new message (via http `POST`) and getting recent messages by a count (via http `GET`). Read more [here](packages/api/README.md).
++ `packages/cli`: CLI for ringer app. Currently supports `init` & `import` commands. Read more [here](packages/cli/README.md).
+
 
 ## Usage
 
-You can import `zChain` or `ringer` as a library/class and directly use it. First, you'll need to link these packages in your application. First follow the setup:
++ First follow the setup and make sure `ringer --help` works.
++ Generate one or more validator keystores using the ethereum `staking-deposit-cli` - [https://github.com/ethereum/staking-deposit-cli#introduction](https://github.com/ethereum/staking-deposit-cli#introduction).
 
-```sh
-# clone + setup
-git clone https://github.com/zer0-os/zChain.git
-sh install.sh
-```
++ After generating the keys, you can import them using `ringer import` command. Use `ringer import --keystores /path/to/validator_keys`. This will import the keystores & secrets to `~/.ringer/keystores` & `~/.ringer/secrets` respectively.
+  <img width="1240" alt="image" src="https://user-images.githubusercontent.com/33264364/205002661-f8237830-ec26-4f2d-a530-fafb9740da93.png">
 
-You can then link the `zchain-core` & `ringer-app` into your project. This will create a symbolic link b/w your *node_modules* and the `zchain` & `ringer` package:
-```sh
-cd myapp/
-yarn link `zchain-core`
-yarn link `ringer-app`
-```
+  *NOTE:* Referenced from [lodestar validator import](https://github.com/ChainSafe/lodestar/blob/unstable/packages/cli/src/cmds/validator/import.ts).
 
-After linking the packages, you can simply import these classes:
-```js
-// using zChain
-import { ZCHAIN } from "zchain-core";
-let node_a = new ZCHAIN();
-await node_a.initialize('node-1.json');
-await node_a.publish('#ringer', 'Bird bird bird, bird is the word!');
++ After importing the keystores, you can start/initialize the node. Use `ringer init --name ratik` to start the node (identified by name "ratik"). This will also start the Rest api server at port `9796` & metrics server at port `8008`.
+  <img width="1072" alt="image" src="https://user-images.githubusercontent.com/33264364/205004571-3c13d17e-e0f3-49e2-9513-d3c2539b0a4b.png">
 
-// using ringer
-import { MEOW } from "ringer-app";
-const ringer = new MEOW();
-await ringer.init('n3o.json');
-await ringer.sendMeow("Hello");
-```
++ Now you can send & receive messages from other validators you're connected to. For testing you can start another node locally (make sure to specify a different restPort using `--restPort <port>` to avoid address already in use error). The enpoint is `ringer/v1/validator/chat/publish/message`. Example POST req:
+  ```bash
+  curl -X POST -H "Content-Type: application/json" --data '{"message":"this is my message","public_key":"0x82592f5b7f91a2f05101c2ef9c897eb245dd6107a97087105b2e827f82fa623d4f5e6ca3146e628d647b4fd51fc381b5"}' http://localhost:9596/ringer/v1/validator/chat/publish/message
+  ```
 
-## API
+  The payload consists of the "message" (in string) & "public_key" (in string). The public key must be valid or an error will be thrown. After POSTing this is how the screen looks like
 
-For a more technical overview of zChain and ringer functionality, checkout API docs hosted on gitbook.
-+ [zChain API](https://www.zero.study/zchain/api/zchain)
-+ [ringer API](https://www.zero.study/zchain/api/ringer)
+  <img width="992" alt="image" src="https://user-images.githubusercontent.com/33264364/205005330-615d905b-edb7-47dd-bcf6-cd911dcda8ea.png">
+
+  **NOTE:** If we're running a beacon node, we can also verify that the validator is an active validator from the beacon chain (by querying the beacon api's state validators).
+
++ You can also retrieve recent messages (only upto 50) using `GET` endpoint `ringer/v1/validator/chat/get/messages/:count`. Example GET req:
+  ```sh
+  // retrieves last message received
+  curl http://localhost:9596/ringer/v1/validator/chat/get/messages/1
+  ```
+
+  Response:
+  <img width="1278" alt="image" src="https://user-images.githubusercontent.com/33264364/205005997-5b43be22-033d-4beb-b37e-797d36146235.png">
+
+
+
+## Improvements
+
+This project was implemented keeping the time constraint in mind, so i kept things minimal. There are improvements which can be made here (open to feedback to add more):-
+
++ **Persistance**: Instead of storing messages in a local array, we can use a database to persist chat messages. So when a node "reloads", it still has those messages persisted.
++ **CRDT**: This is related to chat messages. Since chat messages have a specific order in group, and let's say a peer lost a connection and came back after some time, then it would lose the messages, or even with persistance it would lose the "ordering" of messages. We need some form of crdt to sync messages in the order which they were sent.
++ Add more api routes (eg. `getNodePeers`, `getNodeMetaData`, `getConnections`, ..etc)
++ Handling more DOS vectors
+  * **gossip queues**: implementing a job queue in order to limit some attacker continously sending a lot of messages at the same time.
+  * use [`fail2Ban`](https://docs.libp2p.io/concepts/security/dos-mitigation/#how-to-automate-blocking-with-fail2ban)
+  * better monitering & alerting
++ cli could be improved (can be made more flexible by providing end user more configuration options).
++ generate api docs
+
+## References
+
+References taken to build this project:
++ (libp2p docs) [https://docs.libp2p.io/concepts/security/dos-mitigation/](https://docs.libp2p.io/concepts/security/dos-mitigation/)
++ (lodestar cli) [https://chainsafe.github.io/lodestar/reference/cli/](https://chainsafe.github.io/lodestar/reference/cli/)
++ (zchain - a project which i am working on) [https://github.com/zer0-os/zChain](https://github.com/zer0-os/zChain)
++ (lodestar rest api) [https://github.com/ChainSafe/lodestar/tree/unstable/packages/api](https://github.com/ChainSafe/lodestar/tree/unstable/packages/api)
++ (js-ipfs cli) [https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-cli](https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-cli)
++ (ipfs camp debugging js-ipfs) [https://www.youtube.com/watch?v=sHHJAVVFYAA&ab_channel=IPFS](https://www.youtube.com/watch?v=sHHJAVVFYAA&ab_channel=IPFS)
++ (ipfs camp lodestar intro) [https://www.youtube.com/watch?v=1DStPz32k_4&ab_channel=IPFS](https://www.youtube.com/watch?v=1DStPz32k_4&ab_channel=IPFS)
++ (ipfs camp DOS defence) [https://www.youtube.com/watch?v=jZrAnnFO-2c&ab_channel=IPFS](https://www.youtube.com/watch?v=jZrAnnFO-2c&ab_channel=IPFS)

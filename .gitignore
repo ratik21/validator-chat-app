@@ -115,6 +115,6 @@ dist
 packages/**/build/
 packages/builder/project/
 
-
+data/
 
 .DS_Store

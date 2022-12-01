@@ -41,7 +41,7 @@ export default {
       .epilog(pathHelp)
       .option('force', {
         type: 'boolean',
-        desc: 'If true, REMOVES any previos config present at ~/.ringer',
+        desc: 'If true, REMOVES any previous config present at ~/.ringer',
         default: false
       })
       .option('name', {

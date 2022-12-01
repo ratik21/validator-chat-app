@@ -1,7 +1,7 @@
 {
   "name": "p2p-chat-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "peer to peer chat app for validators",
   "packageManager": "yarn@3.2.0",
   "license": "Apache-2.0",
   "private": true,
