@@ -15,3 +15,5 @@ export const MESSAGE_MAX_LEN = 100000;
 // This domain is used to separate messages signed for this purpose
 // from other purposes
 export const DOMAIN_CHAT_MESSAGE = Uint8Array.from([99, 104, 97, 117]);
+
+export const MAX_QUERY_MESSAGES = 50;

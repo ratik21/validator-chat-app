@@ -33,7 +33,7 @@ export interface GossipMessage {
  * Read information about the beacon node.
  */
 export type Api = {
-  getRecentMessages(): Promise<{data: GossipMessage[]}>;
+  getRecentMessages(count: number): Promise<{data: GossipMessage[]}>;
 
   /**
    * Publish message to the validator chat room
@@ -42,14 +42,14 @@ export type Api = {
 };
 
 export const routesData: RoutesData<Api> = {
-  getRecentMessages: {url: "/ringer/v1/validator/chat/get/messages", method: "GET"},
+  getRecentMessages: {url: "/ringer/v1/validator/chat/get/messages/:count", method: "GET"},
   publishToValidatorChatRoom: {url: "/ringer/v1/validator/chat/publish/message", method: "POST"},
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
 export type ReqTypes = {
-  getRecentMessages: ReqEmpty;
+  getRecentMessages: {params: {count: number}};
   publishToValidatorChatRoom: {body: unknown};
 };
 
@@ -63,7 +63,11 @@ export function getReqSerializers(): ReqSerializers<Api, ReqTypes> {
   );
 
   return {
-    getRecentMessages: reqEmpty,
+    getRecentMessages: {
+      writeReq: (count) => ({params: {count}}),
+      parseReq: ({params}) => [params.count],
+      schema: {params: {count: Schema.Uint}},
+    },
     publishToValidatorChatRoom: reqOnlyBody(messageSSZ, Schema.Object),
   };
 }

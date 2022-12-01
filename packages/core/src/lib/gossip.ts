@@ -103,7 +103,7 @@ export class Gossip {
             body: Buffer.from(deserializedMessage.message.body).toString("utf8")
           },
           pubkey: deserializedMessage.pubkey,
-          from: (event.detail as any).from.toString()
+          from: (event.detail as any).from.toString() // type hack since event.detail doesn't recognize "from" field
         }
         this.messages.push(message);
 
@@ -112,8 +112,8 @@ export class Gossip {
     });
   }
 
-  getRecentMessages() {
-    return this.messages;
+  getRecentMessages(count: number) {
+    return this.messages.slice(-count);
   }
 }
 
