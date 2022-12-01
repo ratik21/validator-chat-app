@@ -33,10 +33,14 @@ export interface GossipMessage {
  * Read information about the beacon node.
  */
 export type Api = {
+  /**
+   * get a list of recently published messages by count
+   */
   getRecentMessages(count: number): Promise<{data: GossipMessage[]}>;
 
   /**
    * Publish message to the validator chat room
+   * @param message message to publish
    */
   publishToValidatorChatRoom(message: Message): Promise<void>;
 };

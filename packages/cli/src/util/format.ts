@@ -1,6 +1,3 @@
-import bls from "@chainsafe/bls";
-import {CoordType} from "@chainsafe/blst";
-import {fromHexString} from "@chainsafe/ssz";
 
 /**
  * 0x prefix a string if not prefixed already

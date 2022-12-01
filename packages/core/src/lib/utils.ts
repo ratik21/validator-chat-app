@@ -6,6 +6,10 @@ import path from "path";
 import { ROOT_DIR_PATH } from "./constants.js";
 import { readFileSync } from "fs";
 
+/**
+ * asserts public key is valid
+ * @param pubkeyHex pubkey to validate
+ */
 function _assertValidPubkeysHex(pubkeyHex: string): void {
   const isValidPubKey = /^0x[0-9a-fA-F]{96}$/.test(pubkeyHex);
   if (!isValidPubKey) {
@@ -13,7 +17,10 @@ function _assertValidPubkeysHex(pubkeyHex: string): void {
   }
 }
 
-
+/**
+ * Returns bls secret key using the imported keystores (from the `ringer import ..` command)
+ * @param pubKey public key hex
+ */
 export async function getBLSSecretKey(pubKey: string): Promise<SecretKey> {
   _assertValidPubkeysHex(pubKey);
 

@@ -16,4 +16,5 @@ export const MESSAGE_MAX_LEN = 100000;
 // from other purposes
 export const DOMAIN_CHAT_MESSAGE = Uint8Array.from([99, 104, 97, 117]);
 
+// limit the maximum number of messages you can query
 export const MAX_QUERY_MESSAGES = 50;

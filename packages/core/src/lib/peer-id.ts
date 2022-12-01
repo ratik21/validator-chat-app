@@ -51,5 +51,3 @@ export async function createPeerIdFromName (name: string): Promise<PeerId> {
   return peerId;
 }
 
-
-

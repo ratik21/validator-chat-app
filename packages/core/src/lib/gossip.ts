@@ -49,7 +49,15 @@ export class Gossip {
     }
     this.listenToIncomingValidatorMessages();
   }
-
+  
+  /**
+   * Publishes a new message to the network
+   * + fetch secret key from the imported keystores
+   * + validates message length
+   * + sign message
+   * + attach signature & send message
+   * @param msgWithPubKey contains message & pubkey string
+   */
   async publishMessageToValidators(msgWithPubKey: MessageWithPubKey): Promise<void> {
     const pubKey = msgWithPubKey.publicKey;
     const secretKey = await getBLSSecretKey(pubKey);
@@ -82,6 +90,12 @@ export class Gossip {
     console.log(`Sent message to ${result.recipients.length} peers`);
   }
 
+  /**
+   * Listens to incoming messages on the validator topic
+   * + deserialize message
+   * + verify signature 
+   * + store message locally in this.messages array
+   */
   private listenToIncomingValidatorMessages() {
     this.pubsub.addEventListener('message', async (event) => {
       if (event.detail.topic === VALIDATOR_CHATROOM_TOPIC) {
@@ -113,6 +127,10 @@ export class Gossip {
     });
   }
 
+  /**
+   * Returns last 'n' messages 
+   * @param count number of messages to return (from last)
+   */
   getRecentMessages(count: number) {
     return this.messages.slice(-count);
   }
