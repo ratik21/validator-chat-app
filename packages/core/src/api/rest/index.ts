@@ -1,6 +1,6 @@
 import { Api } from "api";
 
-import {registerRoutes} from "api/beacon/server";
+import {registerRoutes} from "api/gossip/server";
 import {ErrorAborted} from "@lodestar/utils";
 import {NodeIsSyncing} from "../impl/errors.js";
 import {RestApiServer, RestApiServerModules, RestApiServerMetrics, RestApiServerOpts} from "./base.js";

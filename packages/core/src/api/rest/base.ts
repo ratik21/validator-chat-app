@@ -2,7 +2,7 @@ import querystring from "querystring";
 import fastify, {FastifyError, FastifyInstance} from "fastify";
 import cors from '@fastify/cors'
 import bearerAuthPlugin from "@fastify/bearer-auth";
-import {RouteConfig} from "api/beacon/server"
+import {RouteConfig} from "api/gossip/server"
 import {ErrorAborted, ILogger} from "@lodestar/utils";
 //import {IGauge, IHistogram} from "../../metrics/index.js";
 import {ApiError, NodeIsSyncing} from "../impl/errors.js";
