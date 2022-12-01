@@ -32,6 +32,7 @@ export async function createLibp2pNode(peerId: PeerId): Promise<ILibp2p> {
       autoDial: true,
 
       // dos mitigation
+      // https://docs.libp2p.io/concepts/security/dos-mitigation/#rate-limiting-incoming-connections
       /**
        * The total number of connections allowed to be open at one time
        */
@@ -103,6 +104,7 @@ export async function createLibp2pNode(peerId: PeerId): Promise<ILibp2p> {
     ],
     streamMuxers: [
       // https://github.com/libp2p/js-libp2p/blob/master/doc/LIMITS.md#connection-limits
+      // https://docs.libp2p.io/concepts/security/dos-mitigation/#limit-the-number-of-concurrent-streams-per-connection-your-protocol-needs
       mplex({
       /**
        * The total number of inbound protocol streams that can be opened on a given connection
