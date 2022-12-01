@@ -10,7 +10,7 @@ Available commands:
   + `--keystores` (*string*, **required**): Path to the keystores generated with the Ethereum Foundation Staking Launchpad
   + `--password` (*string*, **optional**): Path to the keystores password.txt file.
 
-2. `init`: Initializes a libp2p node. Takes 4 arguments
+2. `start`: Initializes a libp2p node. Takes 4 arguments
   + `--name` (*string*, **required**): Name associated with the node. You can restart the node using the same name. The peerId is stored by the name of this node at `~/.ringer/peerId/<name>.json`.
   + `--restPort` (*number*, **optional**): REST api server port. eg. `9767`.
   + `--restAddr` (*number*, **optional**): TCP port for the HTTP REST server.

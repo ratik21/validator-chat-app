@@ -1,7 +1,7 @@
-import init from './init.js';
+import start from './start.js';
 import importKeyStore from './import/index.js';
 
 export const commandList = [
-  init,
+  start,
   importKeyStore
 ]

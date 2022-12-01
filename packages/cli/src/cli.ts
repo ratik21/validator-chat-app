@@ -110,7 +110,7 @@ async function main (argv) {
     await ctx.cleanup()
   }
 
-  if (command[0] === 'daemon' || command[0] === 'open' || command[0] === 'init') {
+  if (command[0] === 'daemon' || command[0] === 'open' || command[0] === 'start') {
     // don't shut down the daemon process
     return
   }

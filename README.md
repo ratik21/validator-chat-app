@@ -6,7 +6,7 @@ Peer to peer chat application for validators from the beacon chain where validat
 
 + For the signed message I have included the `publicKey` in the message instead of the validator index. I understand it adds extra bytes (48) to the message but as per my discussion with Cayman he told me that you can just run this app without running a node. So did that accordingly. Otherwise we can use a `validatorIndex` and have the beacon node url, using which we can query the beacon api (using `@lodestar/api`) for the state which has the validator's publickey and index. Please let me know and we can do it that way. 
 
-+ Not able to add unit tests :( Feel bad about this one, but I feel i had exhausted the time limit for the assignment in setting up the code (api, cli, core), adding node config, gossip class, message validation, rest api routes, cli commands (init & import), and metrics(*wip*). But happy to add them if you allow more time, please let me know that as well :)
++ Not able to add unit tests :( Feel bad about this one, but I feel i had exhausted the time limit for the assignment in setting up the code (api, cli, core), adding node config, gossip class, message validation, rest api routes, cli commands (start & import), and metrics(*wip*). But happy to add them if you allow more time, please let me know that as well :)
 
 + *wip* state of metrics. I was able to port the code from `lodestar` and start the metrics server and setup prometheus, but wasn't able to see the global metrics. Will definitely be looking more into that.
 
@@ -49,7 +49,7 @@ The repo has mainly been divided into 3 packages
 
 + `packages/core`: Contains code for setting up the node, route implementation, message handling & metrics. Read more [here](./packages/core/README.md).
 + `packages/api`: REST api for the libp2p node. Supports publishing a new message (via http `POST`) and getting recent messages by a count (via http `GET`). Read more [here](packages/api/README.md).
-+ `packages/cli`: CLI for ringer app. Currently supports `init` & `import` commands. Read more [here](packages/cli/README.md).
++ `packages/cli`: CLI for ringer app. Currently supports `start` & `import` commands. Read more [here](packages/cli/README.md).
 
 
 ## Usage
@@ -62,7 +62,7 @@ The repo has mainly been divided into 3 packages
 
   *NOTE:* Referenced from [lodestar validator import](https://github.com/ChainSafe/lodestar/blob/unstable/packages/cli/src/cmds/validator/import.ts).
 
-+ After importing the keystores, you can start/initialize the node. Use `ringer init --name ratik` to start the node (identified by name "ratik"). This will also start the Rest api server at port `9796` & metrics server at port `8008`.
++ After importing the keystores, you can start/initialize the node. Use `ringer start --name ratik` to start the node (identified by name "ratik"). This will also start the Rest api server at port `9796` & metrics server at port `8008`.
   <img width="1072" alt="image" src="https://user-images.githubusercontent.com/33264364/205004571-3c13d17e-e0f3-49e2-9513-d3c2539b0a4b.png">
 
 + Now you can send & receive messages from other validators you're connected to. For testing you can start another node locally (make sure to specify a different restPort using `--restPort <port>` to avoid address already in use error). The enpoint is `ringer/v1/validator/chat/publish/message`. Example POST req:

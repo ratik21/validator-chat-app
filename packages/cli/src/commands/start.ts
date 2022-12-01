@@ -29,7 +29,7 @@ async function getNewName() {
 }
 
 export default {
-  command: 'init',
+  command: 'start',
 
   describe: 'Initializes a p2p node to facilitate chatting b/w validators',
 
