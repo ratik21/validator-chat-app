@@ -10,6 +10,9 @@ import { BeaconRestApiServer, beaconRestApiServerOpts, getApi } from "./api/inde
 import { createLibp2pNode } from "./lib/libp2p.js";
 import { Gossip } from "./lib/gossip.js";
 import { NodeInitOpts } from "./types.js";
+import { createMetrics } from "./metrics/metrics.js";
+import { createLibp2pMetrics } from "./metrics/metrics/libp2p.js";
+import { defaultMetricsServerOpts, HttpMetricsServer } from "./metrics/index.js";
 
 
 export class P2PNode {
@@ -17,13 +20,12 @@ export class P2PNode {
   peerId: PeerId;
   peerManager: PeerManager;
   gossip: Gossip
-  //zStore: ZStore;
 
   constructor() {}
 
   /**
    * Initializes a new (local) node
-   * @param name Name assigned to this node (by the user)
+   * @param nodeInitOpts node initialization options (name, REST port & address)
    * @returns libp2p node instance
    */
   async initialize (nodeInitOpts: NodeInitOpts): Promise<ILibp2p> {
@@ -56,6 +58,17 @@ export class P2PNode {
       api,
     } as any);
     await restApi.listen();
+
+    // start metrics server
+    const metrics = createMetrics();
+    const metricsServer = new HttpMetricsServer({ 
+      port: defaultMetricsServerOpts.port, 
+      address: defaultMetricsServerOpts.host
+    }, {
+      register: metrics.register
+    })
+    await metricsServer.start();
+    createLibp2pMetrics(this.node, metrics.register);
 
     return this.node;
   }

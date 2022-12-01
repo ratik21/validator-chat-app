@@ -30,6 +30,7 @@ export const SignedChatMessageSSZ = new ContainerType(
 /**
  * Class to Handle gossip functionalites of the p2p chat app
  * eg. subscribe/unsubscribe to topic 
+ * TODO: add validation Queue to prevent DDOS (a node can keep sending many messages)
  */
 export class Gossip {
   private peerId: PeerId

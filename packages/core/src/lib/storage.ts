@@ -7,7 +7,7 @@ export class Store {
   protected libp2p: ILibp2p;
 
   /**
-   * Initializes zchain-db (hypercore append only log)
+   * Initializes db (hypercore append only log)
    * @param libp2p libp2p node
    */
   constructor (libp2p: ILibp2p) {
